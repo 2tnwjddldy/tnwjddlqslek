@@ -1,14 +1,47 @@
-.profile-page-container {
-  background-image: url('../assets/profile-bg.png');
+.profile-bg-container {
+  background-image: url('../assets/profile-bg-bg.png');
   /* PC 기본값: 기존 방식대로 100% 100% 꽉 채우기 */
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
 }
 
+.profile-page-container {
+  background-image: url('../assets/profile-bg.png');
+  /* PC 기본값: 기존 방식대로 100% 100% 꽉 채우기 */
+  background-size: auto 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .profile-card-box {
-  width: 34.72%;
-  height: 55.56%;
+  width: 36%;
+  height: 60%;
+  max-width: 450px;
+  max-height: 800px;
+  min-width: 400px;
+  min-height: 200px;
+  
+  /* 내부 정렬 및 스크롤 디자인 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  border-radius: 20px;
+  padding: 24px;
+  gap: 16px;
+}
+
+/* 스크롤바 디자인 */
+.profile-card-box::-webkit-scrollbar {
+  width: 6px;
+}
+.profile-card-box::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+.profile-card-box::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 /* App.css */
@@ -42,7 +75,7 @@
   }
 
   /* 모바일에서만 세로 길이에 맞추고 가로는 비율 유지 및 넘침 시 숨김 처리 */
-  .profile-page-container {
+  /* .profile-page-container {
     background-size: auto 100%;
-  }
+  } */
 }
