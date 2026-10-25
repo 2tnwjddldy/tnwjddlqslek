@@ -3,28 +3,38 @@ import BackButton from '../components/BackButton';
 import saveBtnImg from '../assets/enterButton.jpg';
 import './GuestPage.css';
 
+// firebase.js의 db 가져오기
+import { db } from '../firebase';
+import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
+
 export default function GuestPage() {
-  // 닉네임(10자 제한) 및 본문(50자 제한) 상태 관리
+  // 닉네임 및 본문 상태 관리
   const [nickname, setNickname] = useState('');
   const [comment, setComment] = useState('');
   
-  // 방명록 히스토리 리스트 (localStorage 연동)
+  // 방명록 히스토리 리스트 (파이어베이스 연동)
   const [historyList, setHistoryList] = useState([]);
 
-  // 로컬스토리지 데이터 로드
+  // 1. 실시간 데이터 불러오기 (onSnapshot)
   useEffect(() => {
-    const savedData = localStorage.getItem('guestbookHistory_v2');
-    if (savedData) {
-      try {
-        setHistoryList(JSON.parse(savedData));
-      } catch (e) {
-        console.error("데이터 파싱 에러:", e);
-      }
-    }
+    const q = query(collection(db, 'guestbook'), orderBy('createdAt', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const list = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setHistoryList(list);
+    }, (error) => {
+      console.error("데이터 실시간 로드 에러:", error);
+    });
+
+    // 컴포넌트 언마운트 시 리스너 해제
+    return () => unsubscribe();
   }, []);
 
-  // 저장 처리 (닉네임 + 본문 한 세트)
-  const handleSave = (e) => {
+  // 2. 방명록 저장 처리 (async 추가)
+  const handleSave = async (e) => {
     e.preventDefault();
     
     if (!nickname.trim() || !comment.trim()) {
@@ -32,30 +42,29 @@ export default function GuestPage() {
       return;
     }
 
-    const newEntry = {
-      id: Date.now(),
-      nickname: nickname.trim(),
-      comment: comment.trim(),
-    };
+    try {
+      // 'guestbook' 컬렉션에 새 문서 추가 (파이어베이스가 컬렉션을 자동 생성해줍니다)
+      await addDoc(collection(db, 'guestbook'), {
+        nickname: nickname,
+        comment: comment,
+        createdAt: serverTimestamp(), // 서버 시간 기록
+      });
 
-    // 최신 순으로 상단에 노출되도록 배치
-    const updatedList = [newEntry, ...historyList];
-    setHistoryList(updatedList);
-    localStorage.setItem('guestbookHistory_v2', JSON.stringify(updatedList));
-
-    // 입력창 초기화
-    setNickname('');
-    setComment('');
-    alert('✅ 방명록이 등록되었습니다.');
+      // 입력창 초기화
+      setNickname('');
+      setComment('');
+      alert('✅ 방명록이 등록되었습니다.');
+    } catch (error) {
+      console.error('방명록 저장 실패: ', error);
+      alert('저장 중 오류가 발생했습니다.');
+    }
   };
 
   return (
     <div className="guest-page-container relative w-screen min-h-screen">
-      
-      {/* 화면 전체 중앙 정렬 메인 영역 (PC: 좌/우, 700px 이하: 상/하) */}
-      <div className="guest-content-wrapper ">
+      <div className="guest-content-wrapper py-10">
         
-        {/* ==================== 1. History 영역 (좌측 / 700px 이하 하단) ==================== */}
+        {/* History 영역 (방명록 목록) */}
         <div className="guest-card-box guest-history-section">
           <h2 className="w-full text-center font-bold text-gray-800 text-[clamp(12px,1.2vw,18px)] mb-2 shrink-0">
             방명록 목록
@@ -77,14 +86,13 @@ export default function GuestPage() {
           </div>
         </div>
 
-        {/* ==================== 2. Write 영역 (우측 / 700px 이하 상단) ==================== */}
+        {/* Write 영역 (방명록 작성) */}
         <div className="guest-card-box guest-write-section">
           <h2 className="w-full text-center font-bold text-gray-800 text-[clamp(12px,1.2vw,18px)] mb-2 shrink-0">
             방명록 작성하기
           </h2>
 
           <form onSubmit={handleSave} className="guest-form">
-            {/* 닉네임 입력란 (한 줄 input / 10자 제한) */}
             <input
               type="text"
               value={nickname}
@@ -94,16 +102,14 @@ export default function GuestPage() {
               className="guest-input-single text-gray-800 placeholder:text-gray-400"
             />
 
-            {/* 본문 입력란 (textarea / 50자 제한) */}
             <textarea
               value={comment}
-              maxLength={50}
+              maxLength={100}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="하고싶은 한 마디 ! (최대 50자)"
+              placeholder="하고싶은 한 마디 ! (최대 100자)"
               className="guest-input-multi text-gray-800 placeholder:text-gray-400"
             />
 
-            {/* 저장하기 버튼 (기존 css/스타일 유지) */}
             <button
               type="submit"
               className="h-[36px] w-auto max-w-full flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 active:scale-95 mt-1"

@@ -69,7 +69,8 @@
   resize: both; /* 팝업 크기 조절 가능 */
   min-width: 280px;
   min-height: 200px;
-  z-index: 10;
+  max-width: calc(100vw - 20px);  /* 화면 안에서 최대 폭 제한 */
+  max-height: calc(100vh - 20px); /* 화면 안에서 최대 높이 제한 */
 }
 
 /* 윈도우 타이틀바 (드래그 핸들) */
@@ -84,7 +85,7 @@
   align-items: center;
   cursor: move; /* 드래그 이동 가능 어필 */
   user-select: none;
-  shrink: 0;
+  flex-shrink: 0;
 }
 
 /* 닫기 버튼 ([X]) */
@@ -193,6 +194,54 @@
     border-radius: 24px;
     overflow-y: auto;
   }
+
+  /* 윈도우 팝업 창 스타일 (크기 조절 가능한 resize 속성 추가) */
+.desktop-window {
+  position: absolute;
+  background: #f0f0f0;
+  border: 2px solid #0055ea;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  resize: both; /* 팝업 크기 조절 가능 */
+  min-width: 280px;
+  min-height: 200px;
+  max-width: calc(100vw - 20px);  /* 화면 안에서 최대 폭 제한 */
+  max-height: calc(100vh - 20px); /* 화면 안에서 최대 높이 제한 */
+}
+
+/* 윈도우 타이틀바 (드래그 핸들) */
+.window-titlebar {
+  background: linear-gradient(90deg, #0055ea, #1e90ff);
+  color: white;
+  padding: 8px 12px;
+  font-weight: bold;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move; /* 드래그 이동 가능 어필 */
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.content-box {
+    width: 100%;
+    height: 100vh;
+    background: #ffffff;
+  }
+
+  .desktop-emoji-icon {
+  font-size: 40px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+}
+
 }
 
 @media (max-width: 768px) {
