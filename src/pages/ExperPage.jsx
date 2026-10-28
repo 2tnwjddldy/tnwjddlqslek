@@ -230,7 +230,7 @@ export default function ExperPage() {
         >
           <div className="window-titlebar" 
             onMouseDown={(e) => handleMouseDown(e, 'skills')}
-            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            onTouchStart={(e) => handleMouseDown(e, 'skills')}
             >
             <span>📁 Skills & Tools</span>
             <button className="window-close-btn" onClick={() => closeWindow('skills')}>X</button>
@@ -284,7 +284,7 @@ export default function ExperPage() {
         >
           <div className="window-titlebar" 
             onMouseDown={(e) => handleMouseDown(e, 'baemin')}
-            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            onTouchStart={(e) => handleMouseDown(e, 'baemin')}
             >
             <span>배달의민족 (우아한형제들)</span>
             <button className="window-close-btn" onClick={() => closeWindow('baemin')}>X</button>
@@ -316,7 +316,7 @@ export default function ExperPage() {
         >
           <div className="window-titlebar" 
             onMouseDown={(e) => handleMouseDown(e, 'bankware')}
-            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            onTouchStart={(e) => handleMouseDown(e, 'bankware')}
             >
             <span>뱅크웨어글로벌 (SBI저축은행)</span>
             <button className="window-close-btn" onClick={() => closeWindow('bankware')}>X</button>
@@ -349,7 +349,7 @@ export default function ExperPage() {
         >
           <div className="window-titlebar" 
             onMouseDown={(e) => handleMouseDown(e, 'woongjin')}
-            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            onTouchStart={(e) => handleMouseDown(e, 'woongjin')}
             >
             <span>웅진씽크빅 (북클럽&스마트올)</span>
             <button className="window-close-btn" onClick={() => closeWindow('woongjin')}>X</button>
@@ -382,7 +382,7 @@ export default function ExperPage() {
         >
           <div className="window-titlebar" 
             onMouseDown={(e) => handleMouseDown(e, 'skt')}
-            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            onTouchStart={(e) => handleMouseDown(e, 'skt')}
             >
             <span>SKT (SKT Open API)</span>
             <button className="window-close-btn" onClick={() => closeWindow('skt')}>X</button>
@@ -411,7 +411,7 @@ export default function ExperPage() {
         >
           <div className="window-titlebar" 
             onMouseDown={(e) => handleMouseDown(e, 'about-qa')}
-            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            onTouchStart={(e) => handleMouseDown(e, 'about-qa')}
             >
             <span>💡 사이트 제작 과정과 QA 관점의 회고</span>
             <button className="window-close-btn" onClick={() => closeWindow('about-qa')}>X</button>
