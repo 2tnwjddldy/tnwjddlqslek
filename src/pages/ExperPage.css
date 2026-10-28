@@ -60,8 +60,7 @@
 .desktop-window {
   position: absolute;
   background: #f0f0f0;
-  border: 2px solid #0055ea;
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
@@ -75,7 +74,7 @@
 
 /* 윈도우 타이틀바 (드래그 핸들) */
 .window-titlebar {
-  background: linear-gradient(90deg, #0055ea, #1e90ff);
+  background: #303030;
   color: white;
   padding: 8px 12px;
   font-weight: bold;
@@ -143,7 +142,7 @@
 
 .skills-category-title {
   font-weight: bold;
-  color: #0055ea;
+  color: #303030;
   font-size: 12px;
   border-bottom: 1.5px solid #e5e7eb;
   padding-bottom: 4px;
@@ -152,11 +151,9 @@
 /* 가로 스크롤이 적용되는 스킬 태그 목록 */
 .skills-horizontal-scroll {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  overflow-x: auto; /* 영역 밖으로 넘칠 시 가로 스크롤 */
-  padding-bottom: 6px;
-  white-space: nowrap;
+  flex-wrap: wrap; /* 📌 한 줄이 가득 차면 다음 줄로 자동 줄바꿈 */
+  gap: 8px 10px;   /* 📌 칩 사이 여백 (위아래 8px, 좌우 10px) */
+  padding-bottom: 4px;
 }
 
 .skill-badge-item {
@@ -170,9 +167,8 @@
   font-size: 12px;
   font-weight: 500;
   color: #374151;
-  cursor: default; /* 선택 불가, 노출 전용 */
+  cursor: default;
   user-select: none;
-  shrink: 0;
 }
 
 /* App.css 반응형 구조 */
@@ -185,10 +181,21 @@
   background-color: #f0f2f5;
 }
 
+.desktop-emoji-icon {
+  font-size: 40px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+}
+
+
+/*여기가 PC에만 적용되는 부분이였음*/
 @media (min-width: 769px) {
   .content-box {
-    width: 400px;
-    height: 800px;
+    width: 100%;
+    height: 100vh;
     background: #ffffff;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 24px;
@@ -199,8 +206,7 @@
 .desktop-window {
   position: absolute;
   background: #f0f0f0;
-  border: 2px solid #0055ea;
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
@@ -212,51 +218,4 @@
   max-height: calc(100vh - 20px); /* 화면 안에서 최대 높이 제한 */
 }
 
-/* 윈도우 타이틀바 (드래그 핸들) */
-.window-titlebar {
-  background: linear-gradient(90deg, #0055ea, #1e90ff);
-  color: white;
-  padding: 8px 12px;
-  font-weight: bold;
-  font-size: 13px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: move; /* 드래그 이동 가능 어필 */
-  user-select: none;
-  flex-shrink: 0;
-}
-
-.content-box {
-    width: 100%;
-    height: 100vh;
-    background: #ffffff;
-  }
-
-  .desktop-emoji-icon {
-  font-size: 40px;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-}
-
-}
-
-@media (max-width: 768px) {
-  .content-box {
-    width: 100%;
-    height: 100vh;
-    background: #ffffff;
-  }
-}
-
-.desktop-emoji-icon {
-  font-size: 40px;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
 }

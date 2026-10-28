@@ -81,7 +81,7 @@ export default function ExperPage() {
 
   // 드래그 시작 (컨테이너 내부 좌표 기준 상대 계산)
   const handleMouseDown = (e, key) => {
-    if (e.target.tagName === 'BUTTON' || window.innerWidth <= 768) return;
+    if (e.target.tagName === 'BUTTON') return;
     e.preventDefault();
     bringToFront(key);
 
@@ -90,31 +90,41 @@ export default function ExperPage() {
     const container = containerRef.current;
     const rect = container ? container.getBoundingClientRect() : { left: 0, top: 0 };
 
-    const clientX = e.clientX - rect.left;
-    const clientY = e.clientY - rect.top;
+    // 마우스 클릭인지, 모바일 터치인지에 따라 좌표(clientX, clientY)를 다르게 가져옴
+    const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+    const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
 
     relPosRef.current = {
-      x: clientX - currentWin.x,
-      y: clientY - currentWin.y,
+      x: (clientX - rect.left) - currentWin.x,
+      y: (clientY - rect.top) - currentWin.y,
     };
 
+    // 마우스 및 터치 이동/종료 이벤트 리스너 각각 등록
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('touchmove', handleMouseMove, { passive: false });
+    window.addEventListener('touchend', handleMouseUp);
   };
 
   // 드래그 이동 (컨테이너 영역 바깥으로 못 나가게 제한)
   const handleMouseMove = (e) => {
     if (!draggingRef.current) return;
+
+    // 모바일에서 화면이 스크롤되거나 흔들리는 기본 터치 동작 방지
+    if (e.cancelable && e.type === 'touchmove') {
+      e.preventDefault();
+    }
+
     const key = draggingRef.current;
     const currentWin = windowsRef.current[key];
     const container = containerRef.current;
     const rect = container ? container.getBoundingClientRect() : { left: 0, top: 0 };
 
-    const clientX = e.clientX - rect.left;
-    const clientY = e.clientY - rect.top;
+    const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+    const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
 
-    let newX = clientX - relPosRef.current.x;
-    let newY = clientY - relPosRef.current.y;
+    let newX = (clientX - rect.left) - relPosRef.current.x;
+    let newY = (clientY - rect.top) - relPosRef.current.y;
 
     const cWidth = container ? container.clientWidth : window.innerWidth;
     const cHeight = container ? container.clientHeight : window.innerHeight;
@@ -139,6 +149,8 @@ export default function ExperPage() {
     draggingRef.current = null;
     window.removeEventListener('mousemove', handleMouseMove);
     window.removeEventListener('mouseup', handleMouseUp);
+    window.removeEventListener('touchmove', handleMouseMove);
+    window.removeEventListener('touchend', handleMouseUp);
   };
 
   return (
@@ -175,26 +187,29 @@ export default function ExperPage() {
           }}
           onMouseDown={() => bringToFront('projects')}
         >
-          <div className="window-titlebar" onMouseDown={(e) => handleMouseDown(e, 'projects')}>
+          <div className="window-titlebar" 
+            onMouseDown={(e) => handleMouseDown(e, 'projects')}
+            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            >
             <span>📂 Projects (경력 및 수행 업무)</span>
             <button className="window-close-btn" onClick={() => closeWindow('projects')}>X</button>
           </div>
           <div className="window-body folder-contents-grid">
             <div className="desktop-icon-item" onClick={() => openWindow('baemin')}>
               <img src={baeminImg} alt="우아한형제들" className="desktop-icon-img rounded-md" />
-              <span className="desktop-icon-label text-gray-800">우아한형제들</span>
+              <span className="text-gray-700 text-[12px]">우아한형제들</span>
             </div>
             <div className="desktop-icon-item" onClick={() => openWindow('bankware')}>
               <img src={sbiImg} alt="SBI저축은행" className="desktop-icon-img rounded-md" />
-              <span className="desktop-icon-label text-gray-800">뱅크웨어글로벌</span>
+              <span className="text-gray-700 text-[12px]">SBI저축은행</span>
             </div>
             <div className="desktop-icon-item" onClick={() => openWindow('woongjin')}>
               <img src={woongjinImg} alt="웅진씽크빅" className="desktop-icon-img rounded-md" />
-              <span className="desktop-icon-label text-gray-800">웅진씽크빅</span>
+              <span className="text-gray-700 text-[12px]">웅진씽크빅</span>
             </div>
             <div className="desktop-icon-item" onClick={() => openWindow('skt')}>
               <img src={sktImg} alt="SKT" className="desktop-icon-img rounded-md" />
-              <span className="desktop-icon-label text-gray-800">SKT Open API</span>
+              <span className="text-gray-700 text-[11px]">SKT Open API</span>
             </div>
           </div>
         </div>
@@ -213,7 +228,10 @@ export default function ExperPage() {
           }}
           onMouseDown={() => bringToFront('skills')}
         >
-          <div className="window-titlebar" onMouseDown={(e) => handleMouseDown(e, 'skills')}>
+          <div className="window-titlebar" 
+            onMouseDown={(e) => handleMouseDown(e, 'skills')}
+            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            >
             <span>📁 Skills & Tools</span>
             <button className="window-close-btn" onClick={() => closeWindow('skills')}>X</button>
           </div>
@@ -264,18 +282,21 @@ export default function ExperPage() {
           }}
           onMouseDown={() => bringToFront('baemin')}
         >
-          <div className="window-titlebar" onMouseDown={(e) => handleMouseDown(e, 'baemin')}>
+          <div className="window-titlebar" 
+            onMouseDown={(e) => handleMouseDown(e, 'baemin')}
+            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            >
             <span>배달의민족 (우아한형제들)</span>
             <button className="window-close-btn" onClick={() => closeWindow('baemin')}>X</button>
           </div>
           <div className="window-body space-y-3 text-xs leading-relaxed">
             <p><strong>수행 기간:</strong> 2026.04 ~ 수행 중 (6개월)</p>
             <p><strong>담당 업무:</strong><br />
-            - 결제·선물하기·쿠폰 과제 참여 및 테스트 설계·수행<br />
-            - Postman 활용 API 테스트 시나리오 작성 및 검증</p>
+            • 결제·선물하기·쿠폰 과제 참여 및 테스트 설계·수행<br />
+            • Postman 활용 API 테스트 시나리오 작성 및 검증</p>
             <p><strong>성과 및 기여:</strong><br />
-            - 6개월간 16개 프로젝트 투입, 유효 이슈 88건 발굴 및 개선 주도<br />
-            - 쿠폰 과제 기반 Full TC 생성 참여 및 지면·상태별 상세 케이스 구축</p>
+            • 6개월간 16개 프로젝트 투입, 유효 이슈 88건 발굴 및 개선 주도<br />
+            • 쿠폰 과제 기반 Full TC 생성 참여 및 지면·상태별 상세 케이스 구축</p>
           </div>
         </div>
       )}
@@ -293,19 +314,22 @@ export default function ExperPage() {
           }}
           onMouseDown={() => bringToFront('bankware')}
         >
-          <div className="window-titlebar" onMouseDown={(e) => handleMouseDown(e, 'bankware')}>
+          <div className="window-titlebar" 
+            onMouseDown={(e) => handleMouseDown(e, 'bankware')}
+            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            >
             <span>뱅크웨어글로벌 (SBI저축은행)</span>
             <button className="window-close-btn" onClick={() => closeWindow('bankware')}>X</button>
           </div>
           <div className="window-body space-y-3 text-xs leading-relaxed">
             <p><strong>수행 기간:</strong> 2026.01 ~ 2026.03 (2개월)</p>
             <p><strong>담당 업무:</strong><br />
-            - 사이다뱅크 앱·모바일웹·PC웹 기획서 기반 요구사항 분석<br />
-            - 조건별 이체 및 상품 가입 등 금융 보안 정책 검증 테스트 수행<br />
-            - 1~3차 통합 테스트 진행 및 차수별 결함 관리</p>
+            • 사이다뱅크 앱·모바일웹·PC웹 기획서 기반 요구사항 분석<br />
+            • 조건별 이체 및 상품 가입 등 금융 보안 정책 검증 테스트 수행<br />
+            • 1~3차 통합 테스트 진행 및 차수별 결함 관리</p>
             <p><strong>성과 및 기여:</strong><br />
-            - 높은 결함 발견율을 인정받아 1차 단기 계약에서 2~3차 통합 테스트까지 연장 계약 체결<br />
-            - 방대한 TC와 촉박한 일정 속에서도 철저한 일정 관리로 기한 내 완수</p>
+            • 높은 결함 발견율을 인정받아 1차 단기 계약에서 2~3차 통합 테스트까지 연장 계약 체결<br />
+            • 방대한 TC와 촉박한 일정 속에서도 철저한 일정 관리로 기한 내 완수</p>
           </div>
         </div>
       )}
@@ -323,19 +347,22 @@ export default function ExperPage() {
           }}
           onMouseDown={() => bringToFront('woongjin')}
         >
-          <div className="window-titlebar" onMouseDown={(e) => handleMouseDown(e, 'woongjin')}>
+          <div className="window-titlebar" 
+            onMouseDown={(e) => handleMouseDown(e, 'woongjin')}
+            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            >
             <span>웅진씽크빅 (북클럽&스마트올)</span>
             <button className="window-close-btn" onClick={() => closeWindow('woongjin')}>X</button>
           </div>
           <div className="window-body space-y-3 text-xs leading-relaxed">
             <p><strong>수행 기간:</strong> 2024.07 ~ 2025.12 (1년 5개월)</p>
             <p><strong>담당 업무:</strong><br />
-            - 165개 패밀리 앱 잦은 업데이트 주기에 맞춘 타임박싱 및 탐색적 테스트 수행<br />
-            - 대규모 학습 콘텐츠 개편(2회), 신규 기능(2~3회), 단말 추가(1회) 대응<br />
-            - 기획서가 미비한 노후 앱의 레거시 동작 분석 및 Full TC 구축</p>
+            • 165개 패밀리 앱 잦은 업데이트 주기에 맞춘 타임박싱 및 탐색적 테스트 수행<br />
+            • 대규모 학습 콘텐츠 개편(2회), 신규 기능(2~3회), 단말 추가(1회) 대응<br />
+            • 기획서가 미비한 노후 앱의 레거시 동작 분석 및 Full TC 구축</p>
             <p><strong>성과 및 기여:</strong><br />
-            - 패밀리 앱 검증 소요 시간 측정, 결과 보고 등 리딩 역할 수행<br />
-            - 주요 50개 앱 중 37개에 대한 약 6,500개의 테스트 케이스 작성 및 자산화</p>
+            • 패밀리 앱 검증 소요 시간 측정, 결과 보고 등 리딩 역할 수행<br />
+            • 주요 50개 앱 중 37개에 대한 약 6,500개의 테스트 케이스 작성 및 자산화</p>
           </div>
         </div>
       )}
@@ -353,15 +380,18 @@ export default function ExperPage() {
           }}
           onMouseDown={() => bringToFront('skt')}
         >
-          <div className="window-titlebar" onMouseDown={(e) => handleMouseDown(e, 'skt')}>
+          <div className="window-titlebar" 
+            onMouseDown={(e) => handleMouseDown(e, 'skt')}
+            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            >
             <span>SKT (SKT Open API)</span>
             <button className="window-close-btn" onClick={() => closeWindow('skt')}>X</button>
           </div>
           <div className="window-body space-y-3 text-xs leading-relaxed">
             <p><strong>수행 기간:</strong> 2024.03 ~ 2024.07 (3개월)</p>
             <p><strong>담당 업무:</strong><br />
-            - 사용자 및 관리자 사이트 상호작용 검증용 TC 작성 및 테스트 수행<br />
-            - API 사용량별 요금 책정, 초과 시 차단 로직, 사이트 미리보기 용량 초과 검증</p>
+            • 사용자 및 관리자 사이트 상호작용 검증용 TC 작성 및 테스트 수행<br />
+            • API 사용량별 요금 책정, 초과 시 차단 로직, 사이트 미리보기 용량 초과 검증</p>
           </div>
         </div>
       )}
@@ -379,7 +409,10 @@ export default function ExperPage() {
           }}
           onMouseDown={() => bringToFront('about-qa')}
         >
-          <div className="window-titlebar" onMouseDown={(e) => handleMouseDown(e, 'about-qa')}>
+          <div className="window-titlebar" 
+            onMouseDown={(e) => handleMouseDown(e, 'about-qa')}
+            onTouchStart={(e) => handleMouseDown(e, 'projects')}
+            >
             <span>💡 사이트 제작 과정과 QA 관점의 회고</span>
             <button className="window-close-btn" onClick={() => closeWindow('about-qa')}>X</button>
           </div>

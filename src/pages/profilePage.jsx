@@ -22,10 +22,10 @@ export default function ProfilePage() {
   // ✏️ [수정 포인트 1] 학력 데이터 직접 수정
   const educationData = [
     {
-      type: '고등학교',
-      period: '2018.03 ~ 2020.02',
-      name: '덕원여자고등학교',
-      major: '-',
+      type: '대학교 (학사)',
+      period: '2025.03 ~ 2026.02',
+      name: '배화여자대학교',
+      major: '소프트웨어공학과(공학사)',
     },
     {
       type: '대학교 (전문학사)',
@@ -34,10 +34,10 @@ export default function ProfilePage() {
       major: 'SW보안융합학과',
     },
     {
-      type: '대학교 (학사)',
-      period: '2025.03 ~ 2026.02',
-      name: '배화여자대학교',
-      major: '소프트웨어공학과(공학사)',
+      type: '고등학교',
+      period: '2018.03 ~ 2020.02',
+      name: '덕원여자고등학교',
+      major: '-',
     },
   ];
 
@@ -103,7 +103,7 @@ export default function ProfilePage() {
 
           {/* ✏️ [수정 포인트 4] 한줄 소개 문구 직접 수정 */}
           <div className="w-full text-white px-3 py-2 text-xs md:text-sm font-semibold text-center shrink-0">
-            💡 집요한 문제 발견과 원활한 소통으로<br/>사용자가 신뢰하는 최선의 서비스 품질을 만들어갑니다.
+            💡 집요한 분석과 원활한 소통으로<br/>사용자가 신뢰하는 최선의 서비스 품질을 만들어갑니다.
           </div>
 
           {/* 2. 하단 탭 영역 */}
