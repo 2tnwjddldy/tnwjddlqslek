@@ -14,7 +14,7 @@ export default function ExperPage() {
   const [windows, setWindows] = useState({
     projects: { isOpen: false, zIndex: 1, x: 40, y: 40, width: 320, height: 260 },
     skills: { isOpen: false, zIndex: 1, x: 60, y: 70, width: 340, height: 320 },
-    'about-qa': { isOpen: false, zIndex: 1, x: 50, y: 50, width: 350, height: 340 },
+    'epilogue': { isOpen: false, zIndex: 1, x: 50, y: 50, width: 350, height: 340 },
     baemin: { isOpen: false, zIndex: 1, x: 80, y: 90, width: 340, height: 320 },
     bankware: { isOpen: false, zIndex: 1, x: 90, y: 110, width: 340, height: 320 },
     woongjin: { isOpen: false, zIndex: 1, x: 100, y: 130, width: 340, height: 320 },
@@ -168,9 +168,9 @@ export default function ExperPage() {
           <span className="desktop-icon-label">Skills</span>
         </div>
 
-        <div className="desktop-icon-item" onClick={() => openWindow('about-qa')}>
+        <div className="desktop-icon-item" onClick={() => openWindow('epilogue')}>
           <img src={logoIcon} alt="Web Logo" className="desktop-icon-img" />
-          <span className="desktop-icon-label">About QA</span>
+          <span className="desktop-icon-label">Epilogue</span>
         </div>
       </div>
 
@@ -396,33 +396,40 @@ export default function ExperPage() {
         </div>
       )}
 
-      {/* ==================== [About QA] ==================== */}
-      {windows['about-qa'].isOpen && (
+      {/* ==================== [Epilogue] ==================== */}
+      {windows['epilogue'].isOpen && (
         <div 
           className="desktop-window"
           style={{ 
-            left: `${windows['about-qa'].x}px`, 
-            top: `${windows['about-qa'].y}px`,
-            width: `${windows['about-qa'].width}px`,
-            height: `${windows['about-qa'].height}px`,
-            zIndex: windows['about-qa'].zIndex 
+            left: `${windows['epilogue'].x}px`, 
+            top: `${windows['epilogue'].y}px`,
+            width: `${windows['epilogue'].width}px`,
+            height: `${windows['epilogue'].height}px`,
+            zIndex: windows['epilogue'].zIndex 
           }}
-          onMouseDown={() => bringToFront('about-qa')}
+          onMouseDown={() => bringToFront('epilogue')}
         >
           <div className="window-titlebar" 
-            onMouseDown={(e) => handleMouseDown(e, 'about-qa')}
-            onTouchStart={(e) => handleMouseDown(e, 'about-qa')}
+            onMouseDown={(e) => handleMouseDown(e, 'epilogue')}
+            onTouchStart={(e) => handleMouseDown(e, 'epilogue')}
             >
-            <span>💡 사이트 제작 과정과 QA 관점의 회고</span>
-            <button className="window-close-btn" onClick={() => closeWindow('about-qa')}>X</button>
+            <span>💡제작 노트 </span>
+            <button className="window-close-btn" onClick={() => closeWindow('epilogue')}>X</button>
           </div>
           <div className="window-body space-y-3 text-xs leading-relaxed">
-            <p><strong>1. 기획 및 요구사항 분석 (Requirement Analysis)</strong><br />
-            - 모바일과 PC 환경 모두에서 자연스러운 사용자 경험을 주기 위해 뷰포트별 레이아웃 분리 전략을 세우고 개발을 시작했습니다.</p>
-            <p><strong>2. UI/UX 및 반응형 검증 과정에서의 노력</strong><br />
-            - 스타일 코드를 분리하는 과정에서 발생한 가로 깨짐 현상과 768px 경계 구간의 레이아웃 어긋남을 직접 테스트하며 크로스 브라우징 정합성을 맞추는 데 집중했습니다.</p>
-            <p><strong>3. 예외 처리 및 배운 점 (Error Handling)</strong><br />
-            - 새로고침 시 데이터 유실 문제나 외부 API 연동 시 발생할 수 있는 402 에러 등의 리스크를 마주하며, 로컬스토리지 방어 코드와 예외 처리가 얼마나 중요한지 몸소 체감했습니다. QA 관점에서 사소한 예외 케이스까지 고려하는 시야를 넓힐 수 있었습니다.</p>
+            <p>
+              <strong>1. AI와 함께한 기획 및 구현</strong><br />
+            • Visual Studio Code를 켜고 AI와 함께 코드를 한 줄씩 쌓아가며 포트폴리오를 만들었습니다. 리액트 구조나 스타일링 코드를 다듬을 때 AI에게 물어보며 해결했고, 내가 원하는 방향을 정확하게 전달하고 소통하는 과정을 통해 해당 사이트를 구축하고 꾸몄습니다.
+            </p>
+
+            <p>
+              <strong>2. UI/UX 및 반응형·경계값 테스트</strong><br />
+            • 768px이라는 모바일과 PC의 경계 구간(Boundary)에서 레이아웃이 깨지거나 찌그러지는 현상이 없는지 꼼꼼하게 직접 테스트했습니다. 화면 크기를 미세하게 조절해가며 어긋나는 부분을 잡아내고 모바일과 웹사이트 두가지 환경에서 테스트 하며 QA로서 경계값 테스트와 뷰포트별 정합성 검증이 얼마나 중요한지 몸소 체감했습니다.
+            </p>
+            <p>
+              <strong>3. 배포와 예외 상황 대응</strong><br />
+            • Firebase와 Vercel을 연동해 배포하는 과정에서 환경 변수 누락이나 데이터베이스를 정상적으로 불러오지 못하는 에러 지면을 마주하기도 했습니다. 이때마다 개발자 모드를 통해 에러를 확인하며, 사소한 예외 케이스와 방어 코드가 사용자 경험에 미치는 영향을 깊이 깨닫는 소중한 시간이었습니다.
+            </p>
           </div>
         </div>
       )}
