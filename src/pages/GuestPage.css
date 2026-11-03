@@ -191,3 +191,55 @@
     background: #ffffff;
   }
 }
+
+/* ==========================================
+   [추가] 얇고 투명한 커스텀 스크롤바 스타일
+   ========================================== */
+
+/* 크롬, 사파리, 오페라 브라우저 */
+.content-box::-webkit-scrollbar {
+  width: 6px; /* 스크롤바 두께를 얇게 설정 (기본값보다 훨씬 얇아짐) */
+}
+
+.content-box::-webkit-scrollbar-track {
+  background: transparent; /* 스크롤바 뒷배경은 투명하게 처리 */
+}
+
+.content-box::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4); /* 스크롤바 손잡이를 반투명한 흰색으로 설정 */
+  border-radius: 10px; /* 손잡이 모서리를 둥글게 처리 */
+}
+
+.content-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.7); /* 마우스를 올렸을 때 살짝 더 진해지도록 설정 */
+}
+
+/* 파이어폭스 브라우저 대응 */
+.content-box {
+  scrollbar-width: thin; /* 얇은 스크롤바 적용 */
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent; /* [손잡이색, 트랙색] */
+}
+
+/* 크롬, 사파리, 오페라 브라우저 */
+.guest-page-container::-webkit-scrollbar {
+  width: 6px; /* 스크롤바 두께를 얇게 설정 (기본값보다 훨씬 얇아짐) */
+}
+
+.guest-page-container::-webkit-scrollbar-track {
+  background: transparent; /* 스크롤바 뒷배경은 투명하게 처리 */
+}
+
+.guest-page-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4); /* 스크롤바 손잡이를 반투명한 흰색으로 설정 */
+  border-radius: 10px; /* 손잡이 모서리를 둥글게 처리 */
+}
+
+.guest-page-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.7); /* 마우스를 올렸을 때 살짝 더 진해지도록 설정 */
+}
+
+/* 파이어폭스 브라우저 대응 */
+.guest-page-container {
+  scrollbar-width: thin; /* 얇은 스크롤바 적용 */
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent; /* [손잡이색, 트랙색] */
+}

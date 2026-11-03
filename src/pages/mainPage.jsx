@@ -14,7 +14,7 @@ export default function MainPage() {
         {/* 1. Profile 버튼 */}
         <button
           onClick={() => navigate('/profile')}
-          className="w-full h-[64px] rounded-2xl bg-white/30 border border-white/50 
+          className="w-full h-[64px] rounded-2xl bg-white/30 
                      text-gray-900 font-bold text-lg backdrop-blur-md 
                      hover:bg-white/50 active:scale-95 transition-all shadow-lg"
         >
@@ -24,7 +24,7 @@ export default function MainPage() {
         {/* 2. Experience 버튼 */}
         <button
           onClick={() => navigate('/experience')}
-          className="w-full h-[64px] rounded-2xl bg-white/30 border border-white/50 
+          className="w-full h-[64px] rounded-2xl bg-white/30
                      text-gray-900 font-bold text-lg backdrop-blur-md 
                      hover:bg-white/50 active:scale-95 transition-all shadow-lg"
         >
@@ -34,12 +34,23 @@ export default function MainPage() {
         {/* 3. GuestBook 버튼 */}
         <button
           onClick={() => navigate('/guestbook')}
-          className="w-full h-[64px] rounded-2xl bg-white/30 border border-white/50 
+          className="w-full h-[64px] rounded-2xl bg-white/30 
                      text-gray-900 font-bold text-lg backdrop-blur-md 
                      hover:bg-white/50 active:scale-95 transition-all shadow-lg"
         >
           GuestBook
         </button>
+
+        {/* 4. Issue & Note 버튼 */}
+        <button
+          onClick={() => navigate('/issuenote')}
+          className="w-full h-[64px] rounded-2xl bg-white/30
+                     text-gray-900 font-bold text-lg backdrop-blur-md 
+                     hover:bg-white/50 active:scale-95 transition-all shadow-lg"
+        >
+          Issue & Release Note
+        </button>
+
       </div>
     </main>
   );
